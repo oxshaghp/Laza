@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
+import CategoryBar from "@/components/ui/Categories";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,19 +23,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="icon"
-          href="/isometric-laptop-with-shopping-cart-keypad_1262-16544.avif"
-          sizes="any"
-          type="image/x-icon"
-        />
-      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <LenisProvider>
-        {children}
+          <NavBar />
+          <CategoryBar/>
+          <main className="flex-grow">{children}</main>
+          <Footer />
         </LenisProvider>
       </body>
     </html>
