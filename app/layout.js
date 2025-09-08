@@ -4,6 +4,7 @@ import LenisProvider from "@/components/LenisProvider";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import CategoryBar from "@/components/ui/Categories";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +29,8 @@ export default function RootLayout({ children }) {
       >
         <LenisProvider>
           <NavBar />
-          <CategoryBar/>
+          <CategoryBar />
+          <ToastContainer position="top-center" />
           <main className="flex-grow">{children}</main>
           <Footer />
         </LenisProvider>
