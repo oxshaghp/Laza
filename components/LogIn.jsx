@@ -12,6 +12,22 @@ function AuthForm() {
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  // ======== Validation functions ========
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const regex = /^[0-9]{10,15}$/;
+    return regex.test(phone);
+  };
+
+  const validatePassword = (pass) => {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    return regex.test(pass);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!email || !pass) {
@@ -42,8 +58,26 @@ function AuthForm() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
     if (!name || !email || !pass || !phone) {
       toast.error("Please fill in all fields.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email.");
+      return;
+    }
+
+    if (!validatePhone(phone)) {
+      toast.error("Phone number must be between 10-15 digits.");
+      return;
+    }
+
+    if (!validatePassword(pass)) {
+      toast.error(
+        "Password must be at least 8 characters, include uppercase, lowercase, number, and special character."
+      );
       return;
     }
 
@@ -111,27 +145,44 @@ function AuthForm() {
             onChange={(e) => setName(e.target.value)}
             className="w-full border rounded-md p-2"
           />
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border rounded-md p-2"
-          />
-          <input
-            type="text"
-            placeholder="Phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full border rounded-md p-2"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={pass}
-            onChange={(e) => setPass(e.target.value)}
-            className="w-full border rounded-md p-2"
-          />
+
+          <div>
+            <input
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border rounded-md p-2"
+            />
+            <small className="text-gray-500">Example: user@example.com</small>
+          </div>
+
+          <div>
+            <input
+              type="text"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full border rounded-md p-2"
+            />
+            <small className="text-gray-500">
+              Digits only, between 10-15 numbers
+            </small>
+          </div>
+
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={pass}
+              onChange={(e) => setPass(e.target.value)}
+              className="w-full border rounded-md p-2"
+            />
+            <small className="text-gray-500">
+              Min 8 chars, include uppercase, lowercase, number & symbol
+            </small>
+          </div>
+
           <Button type="submit" className="mt-2">
             Sign Up
           </Button>

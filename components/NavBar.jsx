@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import React from "react";
 import { CiShoppingCart } from "react-icons/ci";
 import { CiHeart } from "react-icons/ci";
@@ -17,8 +19,17 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import LogIn from "./LogIn";
+import Cookies from "js-cookie";
 
 function NavBar() {
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      setIsAuth(true);
+    }
+  }, []);
   return (
     <nav className="fixed top-0 left-0 w-full bg-[var(--primary-color)] text-[var(--secondry-color)] shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center h-[70px] px-4">
@@ -47,30 +58,43 @@ function NavBar() {
             العربية
           </Button>
           |{/* Auth */}
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
+          {isAuth ? (
+            <Link href="/profile">
               <Button
                 className="h-[40px] px-4 rounded-md transition flex items-center gap-2 cursor-pointer"
                 variant="secondary"
                 size="sm"
               >
                 <CgProfile className="text-lg" />
-                Log In
+                Profile
               </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogCancel className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200">
-                <IoMdClose size={20} />
-              </AlertDialogCancel>
+            </Link>
+          ) : (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  className="h-[40px] px-4 rounded-md transition flex items-center gap-2 cursor-pointer"
+                  variant="secondary"
+                  size="sm"
+                >
+                  <CgProfile className="text-lg" />
+                  Log In
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogCancel className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-200">
+                  <IoMdClose size={20} />
+                </AlertDialogCancel>
 
-              <AlertDialogHeader>
-                <AlertDialogTitle className="text-lg font-bold"></AlertDialogTitle>
-              </AlertDialogHeader>
-              <div className="mt-4">
-                <LogIn />
-              </div>
-            </AlertDialogContent>
-          </AlertDialog>
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-lg font-bold"></AlertDialogTitle>
+                </AlertDialogHeader>
+                <div className="mt-4">
+                  <LogIn />
+                </div>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
           |{/* Icons */}
           <CiHeart className="text-2xl cursor-pointer hover:text-red-500 transition" />
           <CiShoppingCart className="text-2xl cursor-pointer hover:text-yellow-500 transition" />
